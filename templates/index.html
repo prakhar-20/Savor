@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savor - Preserve & Donate</title>
+    <!-- External CSS files -->
+    <link rel="stylesheet" href={{ url_for('static', filename='css/style.css' ) }}>
+
+    <link rel="icon" type="image/x-image" href={{ url_for('static', filename='Images/logo-1.png' ) }}>
+
+    <!-- CDN used -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <!-- ---- Style switcher -----  -->
+    <link rel="stylesheet" href={{ url_for('static', filename='css/style-switcher.css' ) }}>
+    <link rel="stylesheet" href={{ url_for('static', filename='css/Skins/color-1.css' ) }} class="alternate-style"
+        title="color-1">
+    <link rel="stylesheet" href={{ url_for('static', filename='css/Skins/color-2.css' ) }} class="alternate-style"
+        title="color-2" disabled>
+    <link rel="stylesheet" href={{ url_for('static', filename='css/Skins/color-3.css' ) }} class="alternate-style"
+        title="color-3" disabled>
+    <link rel="stylesheet" href={{ url_for('static', filename='css/Skins/color-4.css' ) }} class="alternate-style"
+        title="color-4" disabled>
+    <link rel="stylesheet" href={{ url_for('static', filename='css/Skins/color-5.css' ) }} class="alternate-style"
+        title="color-5" disabled>
+
+</head>
+
+<body>
+    <!-- Main Container Start -->
+    <div class="main-container">
+
+        <!-- Aside Start  -->
+        <div class="aside">
+            <div class="logo">
+                <a href="#"><span>S</span>avor</a>
+            </div>
+            <div class="nav-toggler">
+                <span></span>
+            </div>
+            <ul class="nav">
+                <!-- <li><a href="#"></a></li> -->
+                <li><a href="#home" class="active"><i class="fa fa-home"></i> Home</a></li>
+                <li><a href="#shop"><i class="fa fa-shop"></i> Shop</a></li>
+                <li><a href="#add-items"><i class="fa fa-list"></i> Add Items</a></li>
+                <li><a href="#donate"><i class="fa fa-hands"></i> Donate</a></li>
+                <li><a href="#chat"><i class="fa fa-comments"></i> Chat</a></li>
+                <li><a href="#developer"><i class="fa fa-users"></i> Developers</a></li>
+                <li><a href="#Profile"><i class="fa fa-user"></i> Profile</a></li>
+                <li><a href=""></a></li>
+                <li><a href="/logout"><i class="fa fa-user"></i> Logout</a></li>
+
+            </ul>
+        </div>
+        <!-- Aside Ends  -->
+
+        <!-- Main content Start  -->
+        <div class="main-content">
+
+            <!-- Home Section Start  -->
+            <section class="about section active" id="home">
+                <div class="container">
+                    <div class="row">
+                        <div class="section-title padd-15">
+                            <h2 style="font-size:28px;">Wecome to SAVOR {{name}}</h2>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="about-content ">
+
+                            <h2 style="margin-left:10% ;">
+                                {% if abouttoexpire|length!=0 %}
+                                Items About to Expire soon in less than 10 days</h2>
+                            {% else %}
+                            {% endif %}
+                            <div class="row">
+                                <div class="certificate ">
+                                    <div class="row">
+
+                                        {% for card in abouttoexpire %}
+
+                                        <div class="timeline-box ">
+                                            <div class="timeline shadow-dark">
+                                                <!-- timeline-item  -->
+                                                <div class="timeline-item">
+                                                    <div>
+                                                        <div class="circle-dot"></div>
+                                                        <h4 class="timeline-title">{{card["name"]}}
+                                                        </h4><br>
+                                                        <p class="timeline-text txt-cert"><strong>{{card["category"]}}
+                                                            </strong>
+                                                            <br>
+                                                            {{card["description"]}}
+                                                        </p><br>
+                                                        <h3 class="timeline-date">
+                                                            <i class="fa fa-calendar"></i>Expire-date
+                                                            {{card["expirydate"]}}
+                                                        </h3>
+                                                        <form method="POST" action="/inventory-item-donated/{{card["id"]}}">
+                                                            <input type="text" name="price" placeholder="Price" class="form-control donate-it">
+                                                            <button type="submit" class="btn-view">Donate It</button>
+                                                        </form>
+                                                        <div><a href="/delete/inventory/{{card["id"]}}"
+                                                                class="btn-view">Delete</a></div>
+                                                    </div>
+
+                                                    <div><img src={{ url_for('static', filename='imagedata/'
+                                                            )}}{{card["imagename"]}} alt="Pic-1"></div>
+                                                   
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+
+
+
+
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <h2 style="margin-top:30px ;margin-left:10% ;">
+                                {% if recentlyadded|length!=0 %}
+                                Recently added items</h2>
+                            {% else %}
+                            No items added kindly add the items</h2>
+                            {% endif %}
+
+                            <div class="row">
+                                <div class="certificate ">
+                                    <div class="row">
+
+                                        {% for card in recentlyadded %}
+
+                                        <div class="timeline-box ">
+                                            <div class="timeline shadow-dark">
+                                                <!-- timeline-item  -->
+                                                <div class="timeline-item">
+                                                    <div>
+                                                        <div class="circle-dot"></div>
+                                                        <h4 class="timeline-title">{{card["name"]}}
+                                                        </h4><br>
+                                                        <p class="timeline-text txt-cert"><strong>{{card["category"]}}
+                                                            </strong>
+                                                            <br>
+                                                            {{card["description"]}}
+                                                        </p><br>
+                                                        <h3 class="timeline-date">
+                                                            <i class="fa fa-calendar"></i>Expire-date
+                                                            {{card["expirydate"]}}
+                                                        </h3>
+                                                        <div><a href="/delete/inventory/{{card["id"]}}"
+                                                                class="btn-view">Delete</a></div>
+                                                    </div>
+                                                    <div><img src={{ url_for('static', filename='imagedata/'
+                                                            )}}{{card["imagename"]}} alt="Pic-1"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+
+
+
+
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- <div class="row">
+                                <div class="certificate ">
+                                    <div class="row">
+                                        <div class="timeline-box ">
+                                            <div class="timeline">
+                                                <!-- timeline-item  -->
+                            <!--<div class="timeline-button"
+                                                    style="display:inline-block; margin-left: 10%;">
+                                                    <div>
+                                                        <h4 class="timeline-title" style="text-align: center;">Add Your
+                                                            Items here
+                                                        </h4>
+                                                    </div>
+                                                    <div><img src="Images/2.jpg" width="200px" height="150px"
+                                                            alt="Pic-1"></div>
+                                                    <div style="text-align: center;"></div>
+                                                    <a href="#Profile" class="btn-view">Add Items</a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="timeline-box ">
+                                            <div class="timeline ">
+                                                <!-- timeline-item  -->
+                            <!--<div class="timeline-button"
+                                                    style="display:inline-block; margin-left: 10%; ">
+                                                    <div>
+                                                        <h4 class="timeline-title" style="text-align: center;">Donate
+                                                            Items here
+                                                        </h4>
+                                                    </div>
+                                                    <div><img src="Images/2.jpg" width="200px" height="150px"
+                                                            alt="Pic-1"></div>
+                                                    <div style="text-align: center;"><a href="#"
+                                                            class="btn-view">Donate</a></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+            <!-- Home Section End  -->
+            <!-- About  Section Start  -->
+            <section class="about section" id="shop">
+                <div class="container">
+                    <div class="row">
+                        <div class="section-title ">
+                            <h2>Shop</h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="about-content ">
+                            <div class="row">
+                                <div class="certificate ">
+                                    <div class="row">
+
+                                        {% for shopcard in shopcards %}
+                                        <div class="timeline-box ">
+                                            <div class="timeline shadow-dark">
+                                                <!-- timeline-item  -->
+                                                <div class="timeline-item">
+                                                    <div>
+                                                        <div class="circle-dot"></div>
+                                                        <h6 class="timeline-title">Owner: {{shopcard["ownername"]}}
+                                                        </h6><br>
+                                                        <h4 class="timeline-title">Product: {{shopcard["name"]}}
+                                                        </h4><br>
+                                                        <p class="timeline-text txt-cert"><strong>Category:
+                                                                {{shopcard["category"]}}
+                                                            </strong>
+                                                            <br>
+                                                            Description: {{shopcard["description"]}}
+                                                        </p><br>
+                                                        <h4 class="timeline-title">Location: {{shopcard["address"]}}
+                                                        </h4><br>
+                                                        <h3 class="timeline-date">
+                                                            <i class="fa fa-calendar"></i>Expire-date
+                                                            {{shopcard["expirydate"]}}
+                                                        </h3>
+
+                                                        <div><a href="#" class="btn-view">Price ₹
+                                                                {{shopcard["price"]}}</a></div>
+                                                    </div>
+                                                    <div><img src={{ url_for('static', filename='imagedata/'
+                                                            )}}{{shopcard["imagename"]}} alt="Pic-1"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+            </section>
+            <!-- About  Section End  -->
+
+            <!--Services  Section Start  -->
+            <section class="service section " id="add-items">
+                <div class="container">
+                    <div class="row">
+                        <div class="section-title padd-15">
+                            <h2>Add Items</h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- -----Services Items Start----  -->
+                        <!-- <div class="service-item padd-15">
+                            <div class="service-item-inner">
+                                <div class="icon">
+                                    <i class="fa fa-mobile-alt"></i>
+                                </div>
+                                <h4>Upload an Image</h4>
+                            </div>
+                        </div> -->
+                        <!-- -----Services Items End----  -->
+                    </div>
+
+                    <div class="row">
+                        <form method="POST" action="/item-added" enctype=multipart/form-data>
+                            <div class="contact-form padd-15">
+                                <form method="POST" action="/login" class="contact-form padd-15"></form>
+                                <div class="row">
+                                    <div class="service-item padd-15">
+                                        <div class="service-item-inner">
+                                            <div class="icon">
+                                                <i class="fa fa-mobile-alt"></i>
+                                            </div>
+                                            <h4>Upload an Image</h4>
+                                            <input type="file" id="img" name="file" accept="image/*"
+                                                class="form-control" placeholder="user-pic" required>
+
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div class="form-item col-12 padd-15">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" placeholder="Product Name"
+                                                    name="productname" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-item col-12 padd-15">
+                                            <div class="form-group">
+                                                <!-- <input type="text" class="form-control" placeholder="Catergory"> -->
+                                                <select name="catergory" class="form-control" required>
+                                                    <option value="Select">Catergory</option>
+                                                    <option value="Eatable">Eatable</option>
+                                                    <option value="Medicines">Medicines</option>
+                                                    <option value="Others">Others</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="row">
+                                    <div class="form-item col-12 padd-15">
+                                        <div class="form-group">
+                                            <input class="form-control" type="text" placeholder="Expiry-date"
+                                                name='date' onfocus="(this.type='date')" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-item col-12 padd-15">
+                                        <div class="form-group">
+                                            <textarea class="form-control" placeholder="Desicription ( Optional )"
+                                                name='description'></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-item col-12 padd-15">
+                                        <button type="submit" value="additem" class="btn"> Add item </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Services  Section End  -->
+
+            <!--Portfolio  Section Start  -->
+            <section class="portfolio section " id="donate">
+                <div class="container">
+                    <div class="row">
+                        <div class="section-title padd-15">
+                            <h2>Donate Items</h2>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <form method="POST" action="/item-donated" enctype=multipart/form-data>
+                            <div class="contact-form padd-15">
+                                <div class="row">
+                                    <div class="service-item padd-15">
+                                        <div class="service-item-inner">
+                                            <div class="icon">
+                                                <i class="fa fa-mobile-alt"></i>
+                                            </div>
+                                            <h4>Upload an Image</h4>
+                                            <input type="file" id="img" name="file" accept="image/*"
+                                                class="form-control" placeholder="user-pic" required>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div class="form-item col-12 padd-15">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" placeholder="Product Name"
+                                                    name="name" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-item col-12 padd-15">
+                                            <div class="form-group">
+                                                <!-- <input type="text" class="form-control" placeholder="Catergory"> -->
+                                                <select name="catergory" class="form-control" required>
+                                                    <option value="Select">Catergory</option>
+                                                    <option value="Eatable">Eatable</option>
+                                                    <option value="Medicines">Medicines</option>
+                                                    <option value="Others">Others</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="row">
+                                    <div class="form-item col-12 padd-15">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control"
+                                                placeholder="Price ( We highly recommend to sell your item for free)"
+                                                name='price' required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-item col-12 padd-15">
+                                        <div class="form-group">
+                                            <input class="form-control" type="text" placeholder="Expiry-date"
+                                                name='expirydate' onfocus="(this.type='date')" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-item col-12 padd-15">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Address" name="address"
+                                                required></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-item col-12 padd-15">
+                                        <div class="form-group">
+                                            <textarea class="form-control" placeholder="Desicription" name="description"
+                                                required></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-item col-12 padd-15">
+                                        <button type="submit" class="btn"> Add item to shop</button>
+                                        <!-- <a href="#" class="btn-view">Add Now</a> -->
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </section>
+
+            <!--Portfolio  Section End  -->
+            <!-- chat Section Start  -->
+            <section class="chat section" id="chat">
+                <div class="container">
+                    <div class="row">
+
+
+                    </div>
+                </div>
+            </section>
+            <!--Contact  Section Start  -->
+            <section class="contact section" id="developer">
+                <div class="container">
+                    <div class="row">
+                        <div class="section-title padd-15">
+                            <h2>Contact Me</h2>
+                        </div>
+                    </div>
+
+
+                    <div class = "about-wrapper">
+                        <div class = "about-left">
+                          <div class = "about-left-content">
+                            <div>
+                              <div class = "shadow">
+                                <div class = "about-img">
+                                    <img src={{ url_for('static', filename='Images/me.png' ) }} alt="">
+                                </div>
+                              </div>
+                  
+                              <h2>Vishal<br>Saraiwal</h2>
+                              <h3>FrontEnd & UI/UX Designer</h3>
+                            </div>
+                  
+                            <ul class = "icons">
+                              <li><i class = "fab fa-facebook-f"></i></li>
+                              <li><i class = "fab fa-twitter"></i></li>
+                              <li><i class = "fab fa-linkedin"></i></li>
+                              <li><i class = "fab fa-instagram"></i></li>
+                            </ul>
+                          </div>
+                        </div>
+                  
+                        <div class = "about-right">
+                          <h1>hi<span>!</span></h1>
+                          <h2>Here's who I am & what I do</h2>
+                          <div class = "about-btns">
+                            <button type = "button" class = "btn btn-pink">resume</button>
+                            <button type = "button" class = "btn btn-pink">projects</button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <br><br>
+                    <div class = "about-wrapper">
+                        <div class = "about-left">
+                          <div class = "about-left-content">
+                            <div>
+                              <div class = "shadow">
+                                <div class = "about-img">
+                                    <img src={{ url_for('static', filename='Images/me.png' ) }} alt="">
+                                </div>
+                              </div>
+                  
+                              <h2>Prakhar<br>Bansal</h2>
+                              <h3>BackEnd & Software Developer</h3>
+                            </div>
+                  
+                            <ul class = "icons">
+                              <li><i class = "fab fa-facebook-f"></i></li>
+                              <li><i class = "fab fa-twitter"></i></li>
+                              <li><i class = "fab fa-linkedin"></i></li>
+                              <li><i class = "fab fa-instagram"></i></li>
+                            </ul>
+                          </div>
+                        </div>
+                  
+                        <div class = "about-right">
+                          <h1>hi<span>!</span></h1>
+                          <h2>Here's who I am & what I do</h2>
+                          <div class = "about-btns">
+                            <button type = "button" class = "btn btn-pink">resume</button>
+                            <button type = "button" class = "btn btn-pink">projects</button>
+                          </div>
+                        </div>
+                      </div>
+
+
+
+
+            </section>
+            <!--Contact  Section End  -->
+
+            <!--Profile  Section Start  -->
+
+
+            <section class="portfolio section " id="Profile">
+                <div class="container">
+                    <div class="row">
+                        <div class="section-title padd-15">
+                            <h2>User Profile</h2>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+
+                        <form method="POST" action="/updatedata">
+                        <div class="contact-form padd-15">
+                            <div class="row">
+                                <div class="service-item padd-15">
+                                    <div class="service-item-inner">
+                                        <div>
+                                            <img src={{ url_for('static', filename='Images/me.png' ) }} alt=""
+                                                width="80px" height="80px" style="border-radius: 50%;">
+                                        </div>
+                                        <h4>User Image</h4>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="form-item col-12 padd-15">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" value="{{current_user["name"]}}" name = "name">
+                                        </div>
+                                    </div>
+                                    <div class="form-item col-12 padd-15">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" value="{{current_user["username"]}}" name = "username">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                            <div class="row">
+                                <div class="form-item col-12 padd-15">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" value="{{current_user["email"]}}" name="email">
+                                    </div>
+                                </div>
+                                <div class="form-item col-12 padd-15">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" value="{{current_user["address"]}}" name = "address">
+                                        
+                                    </div>
+                                    <!-- <a href="#" class="btn-view">View Inventery</a> -->
+                                    <button class="btn-view" type = "submit" name ="update" value = "value">Update Data</button>
+                                    <button class="btn-view" type = "button" name ="nosubmit" value = "novalue" onclick="show_inventory_fun()">View Inventory</button>
+                                    <a href="/logout" class="btn-view">Log Out</a>
+                                </div>
+                            </div> 
+
+                            <!-- <div class="row">
+                                <div class="form-item col-12 padd-15">
+                                    <button type="submit" class="btn"> Home</button>
+                                </div>
+                            </div> -->
+
+                        </div>
+                        </form>
+                        <div class="about-content" id="inventory" style="display:none ;">
+                            <h2 style="margin-left:10% ;">All items</h2>
+                            <div class="row">
+                                <div class="certificate ">
+                                    <div class="row">
+
+                                        {% for card in cards %}
+
+                                        <div class="timeline-box ">
+                                            <div class="timeline shadow-dark">
+                                                <!-- timeline-item  -->
+                                                <div class="timeline-item">
+                                                    <div>
+                                                        <div class="circle-dot"></div>
+                                                        <h4 class="timeline-title">{{card["name"]}}
+                                                        </h4><br>
+                                                        <p class="timeline-text txt-cert"><strong>{{card["category"]}}
+                                                            </strong>
+                                                            <br>
+                                                            {{card["description"]}}
+                                                        </p><br>
+                                                        <h3 class="timeline-date">
+                                                            <i class="fa fa-calendar"></i>Expire-date
+                                                            {{card["expirydate"]}}
+                                                        </h3>
+                                                        <div><a href="/delete/inventory/{{card["id"]}}"
+                                                                class="btn-view">Delete</a></div>
+                                                    </div>
+                                                    <div><img src={{ url_for('static', filename='imagedata/'
+                                                            )}}{{card["imagename"]}} alt="Pic-1"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </section>
+
+            <!--Profile  Section End  -->
+
+
+        </div>
+        <!-- Main content End  -->
+
+    </div>
+    <!-- Main Container Ends -->
+
+    <!-- Style Switcher Start -->
+    <div class="style-switcher">
+        <div class="style-switcher-toggler s-icon">
+            <i class="fas fa-cog fa-spin"></i>
+        </div>
+        <div class="day-night s-icon">
+            <i class="fas fa-moon"></i>
+        </div>
+        <h4>Theme Colors</h4>
+        <div class="colors">
+            <span class="color-1" onclick="setActiveStyle('color-1') "></span>
+            <span class="color-2" onclick="setActiveStyle('color-2') "></span>
+            <span class="color-3" onclick="setActiveStyle('color-3') "></span>
+            <span class="color-4" onclick="setActiveStyle('color-4') "></span>
+            <span class="color-5" onclick="setActiveStyle('color-5') "></span>
+        </div>
+    </div>
+    <!-- Style Switcher Ends -->
+
+    <!-- Javascript files  -->
+    <script src={{ url_for('static', filename='js/script.js' ) }}></script>
+    <script src={{ url_for('static', filename='js/style-switcher.js' ) }}></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"
+        referrerpolicy="no-referrer"></script>
+    <!-- Typing Animation -->
+    <script>
+        var typed = new Typed('.animate-typing', {
+            strings: ["Web Developer",
+                " Web Designer",
+                "Graphics Designer",
+                "Programmer"],
+            typeSpeed: 50,
+            BackSpeed: 30,
+            loop: true
+        })
+    </script>
+
+</body>
+
+</html>
