@@ -264,6 +264,7 @@ def idemadded():
             ext = filename.split(".")[-1]
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], str(a)+"."+ext))
             data = Inventory(name= productname, expirydate = expirydate, description = description, category = category, imagename = str(a)+"."+ext, userid = current_user.id)
+            db.session.add(data)
             db.session.commit()
             return redirect("/")
         return None
